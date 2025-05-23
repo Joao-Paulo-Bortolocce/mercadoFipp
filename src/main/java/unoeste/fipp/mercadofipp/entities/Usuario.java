@@ -14,16 +14,16 @@ public class Usuario {
     @Column(name = "usr_pass")
     private String senha;
     @Column(name = "usr_level")
-    private int nivel;
+    private int level;
 
     public Usuario() {
     }
 
-    public Usuario(Long id, String nome, String senha, int nivel) {
+    public Usuario(Long id, String nome, String senha, int level) {
         this.id = id;
         this.nome = nome;
         this.senha = senha;
-        this.nivel = nivel;
+        this.level = level;
     }
 
     public Long getId() {
@@ -51,10 +51,10 @@ public class Usuario {
     }
 
     public int getNivel() {
-        return nivel;
+        return level;
     }
 
-    public void setNivel(int nivel) {
-        this.nivel = nivel;
+    public void setNivel(int level) {
+        this.level = level;
     }
 }

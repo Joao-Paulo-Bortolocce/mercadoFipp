@@ -7,6 +7,7 @@ import unoeste.fipp.mercadofipp.entities.Usuario;
 import unoeste.fipp.mercadofipp.services.UsuarioService;
 
 import java.util.List;
+@CrossOrigin
 @RestController
 @RequestMapping("apis/usuario")
 public class UsuarioRestController {

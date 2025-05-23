@@ -8,7 +8,7 @@ import unoeste.fipp.mercadofipp.entities.Erro;
 import unoeste.fipp.mercadofipp.services.CategoriaService;
 
 import java.util.List;
-
+@CrossOrigin
 @RestController
 @RequestMapping("apis/categoria")
 public class CategoriaRestController {
@@ -25,7 +25,7 @@ public class CategoriaRestController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getById(@PathVariable(name = "id")Long id){
+    public ResponseEntity<Object> getById(@PathVariable(name = "id")long id){
        Categoria categoria= categoriaService.getById(id);
         if(categoria!=null){
             return ResponseEntity.ok(categoria);

@@ -28,7 +28,7 @@ public class CategoriaService {
         }
     }
 
-    public Boolean delete(Long id){
+    public Boolean delete(long id){
         try {
             categoriaRepository.deleteById(id);
             return true;
