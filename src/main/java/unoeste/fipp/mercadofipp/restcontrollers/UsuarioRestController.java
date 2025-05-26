@@ -7,6 +7,8 @@ import unoeste.fipp.mercadofipp.entities.Usuario;
 import unoeste.fipp.mercadofipp.services.UsuarioService;
 
 import java.util.List;
+import java.util.Map;
+
 @CrossOrigin
 @RestController
 @RequestMapping("apis/usuario")
@@ -34,6 +36,13 @@ public class UsuarioRestController {
             return ResponseEntity.badRequest().body("Usuário não encontrado!");
         return ResponseEntity.ok(usuario);
     }
+    @PostMapping("logar")
+    public ResponseEntity<Object> logar(@RequestBody Map dados){
+        Usuario usuario= usuarioService.logar((String) dados.get("usuario"),(String)dados.get("senha"));
+        if (usuario==null)
+            return ResponseEntity.badRequest().body("Usuário não encontrado!");
+        return ResponseEntity.ok(usuario);
+    }
 
 //    @GetMapping("get-by-name/{name}")
 //    public ResponseEntity<Object> getUsuarioName(@PathVariable(name = "name") String nome){
@@ -45,6 +54,8 @@ public class UsuarioRestController {
 
     @PostMapping
     public ResponseEntity<Object> addUsuario(@RequestBody Usuario usuario){
+        if(usuario.getId()==0)
+            usuario.setId(null);
         Usuario novoUsuario= usuarioService.save(usuario);
         if (novoUsuario!=null)
             return ResponseEntity.ok(usuario);

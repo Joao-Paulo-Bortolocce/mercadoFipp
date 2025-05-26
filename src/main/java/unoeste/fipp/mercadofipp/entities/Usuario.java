@@ -50,11 +50,11 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public int getNivel() {
+    public int getLevel() {
         return level;
     }
 
-    public void setNivel(int level) {
+    public void setLevel(int level) {
         this.level = level;
     }
 }
