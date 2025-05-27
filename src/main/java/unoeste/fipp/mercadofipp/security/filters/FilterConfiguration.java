@@ -19,6 +19,7 @@ public class FilterConfiguration {
         config.addAllowedMethod("PATCH");
         config.addAllowedMethod("DELETE");
         config.addAllowedMethod("POST");
+        config.addAllowedMethod("PUT");
         config.addAllowedMethod("GET");
         source.registerCorsConfiguration("/**", config);
         FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<>(new CorsFilter(source));

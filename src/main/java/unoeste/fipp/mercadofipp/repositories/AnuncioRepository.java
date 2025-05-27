@@ -8,6 +8,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import unoeste.fipp.mercadofipp.entities.Anuncio;
 
+import java.util.List;
+
 @Repository
 public interface AnuncioRepository extends JpaRepository<Anuncio, Long> {
 
@@ -26,4 +28,6 @@ public interface AnuncioRepository extends JpaRepository<Anuncio, Long> {
     @Transactional
     @Query(value = "INSERT INTO foto_anuncio (fot_file,anu_id, fot_ext) VALUES (:foto,:id_anuncio,:extensao)", nativeQuery = true)
     public void addFoto(@Param("foto") byte[] foto,@Param("id_anuncio") Long id_anuncio, @Param("extensao") String extensa);
+
+    List<Anuncio> getByUsuarioId(Long usuarioId);
 }

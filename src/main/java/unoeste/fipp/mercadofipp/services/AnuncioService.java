@@ -64,4 +64,8 @@ public class AnuncioService {
     public Anuncio getById(Long id) {
         return anuncioRepository.findById(id).orElse(null);
     }
+
+    public List<Anuncio> getByUserId(Long id) {
+        return anuncioRepository.getByUsuarioId(id);
+    }
 }
