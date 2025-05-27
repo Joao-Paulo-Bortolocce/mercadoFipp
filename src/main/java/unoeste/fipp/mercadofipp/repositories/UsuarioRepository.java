@@ -5,8 +5,11 @@ import org.springframework.stereotype.Repository;
 import unoeste.fipp.mercadofipp.entities.Usuario;
 
 
+
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario,Long> {
 
     public Usuario findByNome(String nome);
+
+    public Usuario findByNomeAndSenha(String nome, String senha);
 }

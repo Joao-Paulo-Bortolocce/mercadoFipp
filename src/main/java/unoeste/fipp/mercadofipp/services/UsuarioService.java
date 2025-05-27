@@ -38,4 +38,8 @@ public class UsuarioService {
             return false;
         }
     }
+
+    public Usuario logar(String nome, String senha) {
+        return usuarioRepo.findByNomeAndSenha(nome,senha);
+    }
 }
