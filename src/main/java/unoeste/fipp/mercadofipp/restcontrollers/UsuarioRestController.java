@@ -3,9 +3,12 @@ package unoeste.fipp.mercadofipp.restcontrollers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import unoeste.fipp.mercadofipp.entities.Erro;
 import unoeste.fipp.mercadofipp.entities.Usuario;
+import unoeste.fipp.mercadofipp.security.JWTTokenProvider;
 import unoeste.fipp.mercadofipp.services.UsuarioService;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,11 +40,15 @@ public class UsuarioRestController {
         return ResponseEntity.ok(usuario);
     }
     @PostMapping("logar")
-    public ResponseEntity<Object> logar(@RequestBody Map dados){
+    public ResponseEntity<Object> logar(@RequestBody Map<String,Object> dados){
         Usuario usuario= usuarioService.logar((String) dados.get("usuario"),(String)dados.get("senha"));
         if (usuario==null)
             return ResponseEntity.badRequest().body("Usuário não encontrado!");
-        return ResponseEntity.ok(usuario);
+        Map<String, Object> resposta= new HashMap<>();
+        resposta.put("usuario",usuario);
+        resposta.put("token", JWTTokenProvider.getToken(usuario.getNome(),usuario.getLevel()+""));
+
+        return ResponseEntity.ok(resposta);
     }
 
 //    @GetMapping("get-by-name/{name}")
@@ -52,14 +59,14 @@ public class UsuarioRestController {
 //        return ResponseEntity.ok(usuario);
 //    }
 
-    @PostMapping
+    @PostMapping("cadastro")
     public ResponseEntity<Object> addUsuario(@RequestBody Usuario usuario){
         if(usuario.getId()==0)
             usuario.setId(null);
         Usuario novoUsuario= usuarioService.save(usuario);
         if (novoUsuario!=null)
             return ResponseEntity.ok(usuario);
-        return ResponseEntity.badRequest().body("Erro ao gravar usuario");
+        return ResponseEntity.badRequest().body(new Erro("Erro ao gravar usuario"));
     }
 
     @PutMapping
