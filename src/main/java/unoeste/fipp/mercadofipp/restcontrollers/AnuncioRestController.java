@@ -12,9 +12,13 @@ import unoeste.fipp.mercadofipp.entities.Erro;
 import unoeste.fipp.mercadofipp.services.AnuncioService;
 
 import java.util.List;
+import java.util.Map;
+
 @CrossOrigin
 @RestController
 @RequestMapping("apis/anuncio")
+
+
 public class AnuncioRestController {
     @Autowired
     AnuncioService anuncioService;
@@ -35,9 +39,9 @@ public class AnuncioRestController {
         return ResponseEntity.badRequest().body(new Erro("Anuncio não encontrados"));
     }
 
-    @GetMapping("add-pergunta/{id}/{texto}")
-    public ResponseEntity<Object>  addPergunta(@PathVariable(name = "id") Long idAnuncio,@PathVariable(name = "texto") String texto){
-        if (anuncioService.addPergunta(idAnuncio, texto))
+    @PostMapping("add-pergunta/{id}")
+    public ResponseEntity<Object>  addPergunta(@PathVariable(name = "id") Long idAnuncio, @RequestBody Map pergunta){
+        if (anuncioService.addPergunta(idAnuncio, (String) pergunta.get("texto")))
             return ResponseEntity.noContent().build();
         return ResponseEntity.badRequest().body(new Erro("Erro ao adicionar a pergunta"));
     }
@@ -49,9 +53,9 @@ public class AnuncioRestController {
         return ResponseEntity.badRequest().body(new Erro("Erro ao adicionar a Foto"));
     }
 
-    @GetMapping("add-resposta/{id}/{texto}")
-    public ResponseEntity<Object>  addResposta(@PathVariable(name = "id") Long idPergunta,@PathVariable(name = "texto") String texto){
-        if (anuncioService.addResposta(idPergunta, texto))
+    @PostMapping("add-resposta/{id}")
+    public ResponseEntity<Object>  addResposta(@PathVariable(name = "id") Long idPergunta,@RequestBody Map resposta){
+        if (anuncioService.addResposta(idPergunta, (String) resposta.get("texto")))
             return ResponseEntity.noContent().build();
         return ResponseEntity.badRequest().body(new Erro("Erro ao adicionar a Resposta"));
     }
