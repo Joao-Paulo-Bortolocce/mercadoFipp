@@ -20,7 +20,7 @@ public class AccessFilter implements Filter {
         HttpServletResponse res = (HttpServletResponse) response;
         String token = req.getHeader("Authorization");
 
-        boolean isAutenticacaoEndpoint = req.getRequestURI().contains("/autenticacao");
+        boolean isAutenticacaoEndpoint = req.getRequestURI().contains("/logar");
 
         if ((token != null && JWTTokenProvider.verifyToken(token)) || isAutenticacaoEndpoint) {
             chain.doFilter(request, response);

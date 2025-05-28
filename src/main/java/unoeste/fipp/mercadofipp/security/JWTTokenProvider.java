@@ -15,8 +15,8 @@ public class JWTTokenProvider {
     private static final SecretKey CHAVE = Keys.hmacShaKeyFor(
             "MINHACHAVESECRETA_MINHACHAVESECRETA".getBytes(StandardCharsets.UTF_8));
 
-    static public String getToken(String usuario,String nivel) 
-    {       
+    static public String getToken(String usuario,String nivel)
+    {
         String jwtToken = Jwts.builder()
             .setSubject("usuario")
             .setIssuer("localhost:8080")
@@ -26,7 +26,7 @@ public class JWTTokenProvider {
                 .atZone(ZoneId.systemDefault()).toInstant()))
             .signWith(CHAVE)
             .compact();
-        return jwtToken;        
+        return jwtToken;
     }
 
     static public boolean verifyToken(String token)
@@ -43,7 +43,7 @@ public class JWTTokenProvider {
        return false;       
     }
 
-    static public Claims getAllClaimsFromToken(String token) 
+    static public Claims getAllClaimsFromToken(String token)
     {
         Claims claims=null;
         try {
@@ -55,7 +55,6 @@ public class JWTTokenProvider {
         } catch (Exception e) {
             System.out.println("Erro ao recuperar as informações (claims)");
         }
-        return claims;        
+        return claims;
     }
-
 }

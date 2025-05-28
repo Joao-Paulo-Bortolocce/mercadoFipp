@@ -39,6 +39,7 @@ public class UsuarioRestController {
     @PostMapping("logar")
     public ResponseEntity<Object> logar(@RequestBody Map dados){
         Usuario usuario= usuarioService.logar((String) dados.get("usuario"),(String)dados.get("senha"));
+
         if (usuario==null)
             return ResponseEntity.badRequest().body("Usuário não encontrado!");
         return ResponseEntity.ok(usuario);
