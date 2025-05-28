@@ -31,6 +31,14 @@ public class AnuncioRestController {
         return ResponseEntity.badRequest().body(new Erro("Anuncios não encontrados"));
     }
 
+    @GetMapping(value = "/user/{id}")
+    public ResponseEntity<Object> getByUser(@PathVariable(name = "id") Long id){
+        List<Anuncio> anuncios= anuncioService.getByUserId(id);
+        if(anuncios!=null && !anuncios.isEmpty())
+            return ResponseEntity.ok(anuncios);
+        return ResponseEntity.badRequest().body(new Erro("Anuncios não encontrados"));
+    }
+
     @GetMapping(value = "/{id}")
     public ResponseEntity<Object> getAll(@PathVariable(name = "id") Long id){
         Anuncio anuncio= anuncioService.getById(id);

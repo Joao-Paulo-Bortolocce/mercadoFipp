@@ -20,17 +20,16 @@ public class AccessFilter implements Filter {
         HttpServletResponse res = (HttpServletResponse) response;
         String token = req.getHeader("Authorization");
 
-        boolean isAutenticacaoEndpoint = req.getRequestURI().contains("/logar");
+        boolean isAutenticacaoEndpoint = req.getRequestURI().contains("/logar")|| req.getRequestURI().contains("/cadastro");
 
         if ((token != null && JWTTokenProvider.verifyToken(token)) || isAutenticacaoEndpoint) {
             chain.doFilter(request, response);
         } else {
+            System.out.println(token);
             res.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401
             res.setContentType("application/json");
-
             Map<String, String> responseBody = new HashMap<>();
             responseBody.put("mensagem", "Não autorizado. Faça login para prosseguir.");
-
             ObjectMapper mapper = new ObjectMapper();
             res.getWriter().write(mapper.writeValueAsString(responseBody));
         }

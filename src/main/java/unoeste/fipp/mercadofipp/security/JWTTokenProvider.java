@@ -10,51 +10,53 @@ import javax.crypto.SecretKey;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.JwtException;
 
 public class JWTTokenProvider {
-    private static final SecretKey CHAVE = Keys.hmacShaKeyFor(
-            "MINHACHAVESECRETA_MINHACHAVESECRETA".getBytes(StandardCharsets.UTF_8));
 
-    static public String getToken(String usuario,String nivel)
-    {
-        String jwtToken = Jwts.builder()
-            .setSubject("usuario")
-            .setIssuer("localhost:8080")
-            .claim("nivel", nivel)
-            .setIssuedAt(new Date())
-            .setExpiration(Date.from(LocalDateTime.now().plusMinutes(15L)
-                .atZone(ZoneId.systemDefault()).toInstant()))
-            .signWith(CHAVE)
-            .compact();
-        return jwtToken;
+    private static final String SECRET = "MINHACHAVESECRETA_MINHACHAVESECRETA_123456";
+    private static final SecretKey CHAVE = Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
+
+    public static String getToken(String usuario, String level) {
+        return Jwts.builder()
+                .setSubject(usuario)
+                .setIssuer("localhost:8080")
+                .claim("level", level)
+                .setIssuedAt(new Date())
+                .setExpiration(Date.from(LocalDateTime.now().plusMinutes(15L)
+                        .atZone(ZoneId.systemDefault()).toInstant()))
+                .signWith(CHAVE, SignatureAlgorithm.HS256)
+                .compact();
     }
 
-    static public boolean verifyToken(String token)
-    {
+    public static boolean verifyToken(String token) {
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
         try {
             Jwts.parserBuilder()
-                .setSigningKey(CHAVE)
-                .build()
-                .parseClaimsJws(token).getSignature();
-                return true;
-       } catch (Exception e) {
-                System.out.println(e);
-       }
-       return false;       
+                    .setSigningKey(CHAVE)
+                    .build()
+                    .parseClaimsJws(token);
+            return true;
+        } catch (JwtException e) {
+            // Inclui SignatureException, ExpiredJwtException, etc.
+            System.out.println("Token inválido: " + e.getMessage());
+            return false;
+        }
     }
 
-    static public Claims getAllClaimsFromToken(String token)
-    {
-        Claims claims=null;
+    public static Claims getAllClaimsFromToken(String token) {
         try {
-            claims = Jwts.parserBuilder()
-            .setSigningKey(CHAVE)
-            .build()
-            .parseClaimsJws(token)
-            .getBody();
-        } catch (Exception e) {
-            System.out.println("Erro ao recuperar as informações (claims)");
+            return Jwts.parserBuilder()
+                    .setSigningKey(CHAVE)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (JwtException e) {
+            System.out.println("Erro ao recuperar claims: " + e.getMessage());
+            return null;
         }
-        return claims;
     }
 }

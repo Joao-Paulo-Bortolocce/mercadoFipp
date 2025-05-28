@@ -1,10 +1,12 @@
 package unoeste.fipp.mercadofipp.restcontrollers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import unoeste.fipp.mercadofipp.entities.Categoria;
 import unoeste.fipp.mercadofipp.entities.Erro;
+import unoeste.fipp.mercadofipp.security.JWTTokenProvider;
 import unoeste.fipp.mercadofipp.services.CategoriaService;
 
 import java.util.List;
@@ -16,8 +18,18 @@ public class CategoriaRestController {
     private CategoriaService categoriaService;
 
     @GetMapping
-    public ResponseEntity<Object> getAll(){
+    public ResponseEntity<Object> getAll(@RequestHeader("Authorization") String token){
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+        System.out.println("CoNTROLER: " + token);
+        if (!JWTTokenProvider.verifyToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new Erro("Token inválido ou expirado"));
+        }
         List<Categoria> categoriaList= categoriaService.getAll();
+
+
         if(categoriaList!=null && !categoriaList.isEmpty()){
             return ResponseEntity.ok(categoriaList);
         }
