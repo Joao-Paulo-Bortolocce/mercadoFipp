@@ -18,11 +18,12 @@ public class JWTTokenProvider {
     private static final String SECRET = "MINHACHAVESECRETA_MINHACHAVESECRETA_123456";
     private static final SecretKey CHAVE = Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
 
-    public static String getToken(String usuario, String level) {
+    public static String getToken(String usuario, String level, Long id) {
         return Jwts.builder()
                 .setSubject(usuario)
                 .setIssuer("localhost:8080")
                 .claim("level", level)
+                .claim("idUser", id)
                 .setIssuedAt(new Date())
                 .setExpiration(Date.from(LocalDateTime.now().plusMinutes(15L)
                         .atZone(ZoneId.systemDefault()).toInstant()))

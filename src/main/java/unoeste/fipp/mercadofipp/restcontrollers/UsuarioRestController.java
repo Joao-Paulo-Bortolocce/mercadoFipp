@@ -47,7 +47,7 @@ public class UsuarioRestController {
             return ResponseEntity.badRequest().body("Usuário não encontrado!");
         Map<String, Object> resposta= new HashMap<>();
         resposta.put("usuario",usuario);
-        resposta.put("token", JWTTokenProvider.getToken(usuario.getNome(),usuario.getLevel()+""));
+        resposta.put("token", JWTTokenProvider.getToken(usuario.getNome(),usuario.getLevel()+"", usuario.getId()));
 
         return ResponseEntity.ok(resposta);
     }

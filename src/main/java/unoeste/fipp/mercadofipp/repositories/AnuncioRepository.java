@@ -13,6 +13,7 @@ import java.util.List;
 @Repository
 public interface AnuncioRepository extends JpaRepository<Anuncio, Long> {
 
+
     @Modifying
     @Transactional
     @Query(value = "INSERT INTO pergunta_anuncio (per_text,anu_id) VALUES (:texto,:id_anuncio)", nativeQuery = true)
@@ -30,4 +31,20 @@ public interface AnuncioRepository extends JpaRepository<Anuncio, Long> {
     public void addFoto(@Param("foto") byte[] foto,@Param("id_anuncio") Long id_anuncio, @Param("extensao") String extensa);
 
     List<Anuncio> getByUsuarioId(Long usuarioId);
+    List<Anuncio> findTop5ByOrderByDataDesc();
+
+    @Modifying
+    @Transactional
+    @Query(value = "DELETE FROM foto_anuncio WHERE anu_id = :id_anuncio", nativeQuery = true)
+    public void delFoto(
+            @Param("id_anuncio") Long id_anuncio
+    );
+
+    @Modifying
+    @Transactional
+    @Query(value = "DELETE FROM pergunta_anuncio WHERE anu_id = :id_anuncio", nativeQuery = true)
+    public void delPergunta(
+            @Param("id_anuncio") Long id_anuncio
+    );
+
 }

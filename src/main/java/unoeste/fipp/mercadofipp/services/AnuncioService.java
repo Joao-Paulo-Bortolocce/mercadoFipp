@@ -61,11 +61,27 @@ public class AnuncioService {
         return ext;
     }
 
+    public List<Anuncio> getDestaque() {
+        return anuncioRepository.findTop5ByOrderByDataDesc();
+    }
+
     public Anuncio getById(Long id) {
         return anuncioRepository.findById(id).orElse(null);
     }
 
     public List<Anuncio> getByUserId(Long id) {
         return anuncioRepository.getByUsuarioId(id);
+    }
+
+    public boolean delete(long id) {
+        Anuncio anuncio = anuncioRepository.findById(id).orElse(null);
+        try {
+            anuncioRepository.delFoto(anuncio.getId());
+            anuncioRepository.delPergunta(anuncio.getId());
+            anuncioRepository.delete(anuncio);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
